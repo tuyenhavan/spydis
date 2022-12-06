@@ -1,9 +1,10 @@
 # spydis 
------It is in progress-----
+*It is in progress*
 
 
 A simple package for calculating drought indices based on time-series remote sensing and gridded datasets.
 # Main features
+
 This package focuses on calculating some commonly used drought indices from remote sensing and meteorological perspectives:
 - **Remote sensing-based drought indices**
 	- VCI: Vegetation condition index. VCI can range from 0 (0) to 1 (100) scale, which indicates extreme to non-drought, respectively. Details can be found [here](https://www.tandfonline.com/doi/abs/10.1080/01431169608949106)
