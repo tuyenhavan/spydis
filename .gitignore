@@ -1,0 +1,21 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+.idea
+.idea/vcs.xml
+.idea/workspace.xml
+.idea/modules.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/csv-plugin.xml
+__pycache__
+*.iml
+out
+gen
+
+# Jupyter-lab files
+Notebooks
+.ipynb_checkpoints
+*.ipynb
