@@ -15,7 +15,5 @@ __pycache__
 out
 gen
 
-# Jupyter-lab files
-Notebooks
+# Jupyter-lab checkpoint folder
 .ipynb_checkpoints
-*.ipynb
