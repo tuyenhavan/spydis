@@ -25,8 +25,8 @@ def time_dimension(ds, start_date=None, freq=None,input_dim=None,out_dim=None):
     if start_date is None:
         start_date=dt.datetime.strptime("2000-02-01","%Y-%m-%d")
     else:
-        if check_date(start_date):
-            start_date=dt.datetime.strptime(f"{start_date}","%Y-%m-%d")
+        start_date=date_format(start_date)
+        start_date=dt.datetime.strptime(f"{start_date}","%Y-%m-%d")
     if input_dim is None:
         input_dim="band"
     else:
@@ -50,16 +50,70 @@ def time_dimension(ds, start_date=None, freq=None,input_dim=None,out_dim=None):
     ds=ds.rename({input_dim:out_dim})
     return ds
 
-def check_date(date_str):
-    """ Check if date is in a required format.
+def date_format(date_str):
+    """ Format datet string.
 
         Args:
             date_str (str): Date in string format.
     """
-    fmts="%Y-%m-%d"
-    try:
-        _date=dt.datetime.strptime(date_str,fmts)
-        return True
-    except Exception:
-        raise Exception
+    if isinstance(date_str,str):
+        if "." in date_str:
+            date_str="-".join([i.strip() for i in date_str.split(".") if i.isdigit()])
+            return date_str
+        elif "/" in date_str:
+            date_str="-".join([i.strip() for i in date_str.split("/") if i.isdigit()])
+            return date_str
+        elif "-" in date_str:
+            date_str="-".join([i.strip() for i in date_str.split("-") if i.isdigit()])
+            return date_str
+        else:
+            print("Date string should be like 2000-10-20")
+    else:
+        raise TypeError ("Please provide date string")
 
+
+def NDVI(red,nir):
+    """ Calculte NDVI from Red and Near Infrared bands.
+
+        Args:
+            red (numpy|DataArray): Red band in
+            nir (numpy|DataArray): Nir infreared band
+
+        return:
+            NDVI (DataArray|numpy)
+
+        Reference: https://doi.org/10.1175/1520-0477(1995)076%3C0655:DOTLIT%3E2.0.CO;2
+    """
+    if isinstance(red,(xr.core.dataarray.DataArray,np.ndarray)) and isinstance(nir,(xr.core.dataarray.DataArray,np.ndarray)):
+        if (red.shape==nir.shape) and (len(red.shape)==2 and len(nir.shape)==2):
+            ndvi=(nir-red)/(nir+red)
+            return ndvi
+        else:
+            raise ValueError ("Input data are not the same shape")
+    else:
+        raise TypeError ("Input data should be DataArray or numpy 2-D")
+
+def SAVI(nir,red,scale=0.5):
+    """ Calculate SAVI (Soil Adjusted Vegetation Index)
+
+        Args:
+            nir (numpy|DataArray): Nir infreared band
+            red (numpy|DataArray): Red band in
+            scale (float|optional): A scaling factor.
+
+        return:
+            SAVI (numpy|DataArray): A SAVI data
+
+        Reference: https://doi.org/10.1016/0034-4257(88)90106-X
+    """
+    if isinstance(red,(xr.core.dataarray.DataArray,np.ndarray)) and isinstance(nir,(xr.core.dataarray.DataArray,np.ndarray)):
+        if (red.shape==nir.shape) and (len(red.shape)==2 and len(nir.shape)==2):
+            pass
+        else:
+            raise ValueError ("Datasets should have the same shape")
+    else:
+        raise TypeError("Datasets should be DataArray or numpy")
+    if not isinstance(scale, float):
+        raise TypeError ("scale should be float")
+    savi=((nir-red)/(nir+red+scale))*(1+scale)
+    return savi
