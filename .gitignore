@@ -6,7 +6,7 @@
 .include
 # Jupyter-lab checkpoint folder
 .ipynb_checkpoints
-# Ignore the following folders
+# Ignore the following folders.
 Scripts/
 Include/
 Lib/
