@@ -1,5 +1,7 @@
 """A module for calculating common drought indices from remote sensing time-series data recommended by the International Meteorological Organization (IMO)"""
 
+import xarray as xr
+
 def VCI(data, dim=None, freq=None):
     """ Calculate VCI (Vegetation Condition Index) from time-series NDVI observations. This function can be extended to TCI.
 
